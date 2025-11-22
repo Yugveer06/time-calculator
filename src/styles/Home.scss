@@ -152,8 +152,8 @@
 									opacity: 0.32;
 									font-size: 0.84em;
 									width: 0px;
-									transition: opacity 0.2s ease, scale 0.2s ease,
-										color 0.2s ease;
+									transition: opacity 0.2s ease,
+										scale 0.2s ease, color 0.2s ease;
 
 									@media (max-width: 720px) {
 										opacity: 0;
@@ -201,7 +201,8 @@
 							}
 
 							&:focus {
-								box-shadow: 0 0 0 2px white inset, 0 0 0 2px var(--purplishBlue);
+								box-shadow: 0 0 0 2px white inset,
+									0 0 0 2px var(--purplishBlue);
 							}
 						}
 					}
@@ -298,7 +299,8 @@
 					background: var(--purplishBlue);
 				}
 				&:focus {
-					box-shadow: 0 0 0 2px white inset, 0 0 0 2px var(--purplishBlue);
+					box-shadow: 0 0 0 2px white inset,
+						0 0 0 2px var(--purplishBlue);
 				}
 			}
 		}
@@ -350,7 +352,8 @@
 					}
 
 					&:focus {
-						box-shadow: 0 0 0 2px white inset, 0 0 0 2px var(--purplishBlue);
+						box-shadow: 0 0 0 2px white inset,
+							0 0 0 2px var(--purplishBlue);
 					}
 				}
 			}

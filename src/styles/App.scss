@@ -174,7 +174,8 @@ input {
 					}
 
 					&:focus {
-						box-shadow: 0 0 0 2px var(--white) inset, 0 0 0 2px var(--purplishBlue);
+						box-shadow: 0 0 0 2px var(--white) inset,
+							0 0 0 2px var(--purplishBlue);
 					}
 
 					svg {
@@ -222,7 +223,8 @@ input {
 						padding: 4px 16px;
 						color: var(--marineBlue);
 						background: var(--lightBlue);
-						transition: color 0s ease, background 0s ease, padding 0.2s ease;
+						transition: color 0s ease, background 0s ease,
+							padding 0.2s ease;
 					}
 				}
 			}
@@ -478,4 +480,184 @@ input {
 
 .TooltipArrow {
 	fill: var(--marineBlue);
+}
+
+// Time Edit Popover Styles
+.timeEditButton {
+	@include centered-flex-row;
+	cursor: pointer;
+	width: 20px;
+	height: 20px;
+	border-radius: 4px;
+	color: var(--lighterBlack);
+	background: var(--lightGray);
+	transition: color 0.2s ease, background 0.2s ease;
+	font-size: 0.75em;
+	margin-left: 6px;
+
+	&:hover,
+	&:focus {
+		color: var(--marineBlue);
+		background-color: var(--lightBlue);
+	}
+
+	&:focus {
+		box-shadow: 0 0 0 2px var(--white) inset, 0 0 0 2px var(--purplishBlue);
+	}
+
+	svg {
+		pointer-events: none;
+	}
+}
+
+.TimeEditPopoverContent {
+	min-width: 280px;
+	border-radius: 4px;
+	background-color: var(--white);
+	border: 1px solid var(--marineBlue);
+	box-shadow: 0 0 64px -12px var(--coolGray);
+	animation-duration: 400ms;
+	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+	will-change: transform, opacity;
+
+	&[data-state="open"][data-side="top"] {
+		animation-name: slideDownAndFade;
+	}
+	&[data-state="open"][data-side="right"] {
+		animation-name: slideLeftAndFade;
+	}
+	&[data-state="open"][data-side="bottom"] {
+		animation-name: slideUpAndFade;
+	}
+	&[data-state="open"][data-side="left"] {
+		animation-name: slideRightAndFade;
+	}
+
+	.TimeEditPopoverHeader {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 12px 16px;
+		border-bottom: 1px solid var(--lightGray);
+
+		h3 {
+			font-size: 1em;
+			color: var(--marineBlue);
+			font-weight: 600;
+		}
+	}
+
+	.TimeEditPopoverBody {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		padding: 16px;
+
+		.inputGroup {
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+
+			label {
+				font-size: 0.875em;
+				font-weight: 600;
+				color: var(--marineBlue);
+			}
+
+			input {
+				height: 32px;
+				border-radius: 4px;
+				background: var(--lightGray);
+				padding: 0 12px;
+				color: var(--lighterBlack);
+				font-size: 0.875em;
+
+				&:hover,
+				&:focus {
+					color: var(--marineBlue);
+					background: var(--lightBlue);
+				}
+
+				&:focus {
+					box-shadow: 0 0 0 2px var(--white) inset,
+						0 0 0 2px var(--purplishBlue);
+				}
+			}
+		}
+	}
+
+	.TimeEditPopoverActions {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 0 16px 16px 16px;
+
+		button {
+			@include centered-flex-row;
+			cursor: pointer;
+			height: 32px;
+			border-radius: 4px;
+			font-weight: 600;
+			transition: all 0.2s ease;
+
+			&.applyButton {
+				color: var(--white);
+				background: var(--marineBlue);
+
+				&:hover {
+					background: var(--purplishBlue);
+				}
+
+				&:focus {
+					box-shadow: 0 0 0 2px var(--white) inset,
+						0 0 0 2px var(--purplishBlue);
+				}
+
+				&:disabled {
+					opacity: 0.5;
+					cursor: not-allowed;
+				}
+			}
+
+			&.resetButton {
+				color: var(--marineBlue);
+				background: var(--lightBlue);
+
+				&:hover {
+					color: var(--white);
+					background: var(--purplishBlue);
+				}
+
+				&:focus {
+					box-shadow: 0 0 0 2px var(--white) inset,
+						0 0 0 2px var(--purplishBlue);
+				}
+			}
+		}
+	}
+
+	.TimeEditPopoverClose {
+		font-family: inherit;
+		border-radius: 50%;
+		height: 20px;
+		width: 20px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--marineBlue);
+		cursor: pointer;
+
+		&:hover {
+			color: var(--white);
+			background: var(--purplishBlue);
+		}
+
+		&:focus {
+			box-shadow: 0 0 0 2px var(--purplishBlue);
+		}
+	}
+
+	.TimeEditPopoverArrow {
+		fill: var(--marineBlue);
+	}
 }

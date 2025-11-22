@@ -1,6 +1,7 @@
 import React from "react";
 import { AnimatePresence, motion as m } from "framer-motion";
 import TimelineDisplay from "./TimelineDisplay";
+import TimeEditPopover from "./TimeEditPopover";
 
 const SystemClockDisplay = ({
 	currentTimeZone,
@@ -9,6 +10,9 @@ const SystemClockDisplay = ({
 	offsetTimeBy,
 	offsetTime,
 	convertTimeZone,
+	onDateChange,
+	isCustomTime,
+	sourceTimezone,
 }) => {
 	return (
 		<div className='default timezone'>
@@ -21,29 +25,47 @@ const SystemClockDisplay = ({
 						{currentTimeZone}
 					</h2>
 					<div className='timeAndDate current'>
-						<span className='label'>Current Time and Date: </span>
-						<span className='time'>
-							{date
-								.toLocaleTimeString([], {
-									hour: "2-digit",
-									minute: "2-digit",
-									second: "2-digit",
-									hour12: hourFormat === 12,
-								})
-								.replace(
-									hourFormat === 12 ? /^00/ : /^24/,
-									hourFormat === 12 ? "12" : "00"
-								)}
-						</span>
-						<span className='date'>
-							{", " +
-								date.toLocaleDateString([], {
-									weekday: "long",
-									year: "numeric",
-									month: "long",
-									day: "numeric",
-								})}
-						</span>
+						<div
+							style={{
+								display: "flex",
+								justifyContent: "space-between",
+								alignItems: "flex-start",
+							}}
+						>
+							<div>
+								<span className='label'>
+									Current Time and Date:{" "}
+								</span>
+								<span className='time'>
+									{date
+										.toLocaleTimeString([], {
+											hour: "2-digit",
+											minute: "2-digit",
+											second: "2-digit",
+											hour12: hourFormat === 12,
+										})
+										.replace(
+											hourFormat === 12 ? /^00/ : /^24/,
+											hourFormat === 12 ? "12" : "00"
+										)}
+								</span>
+								<span className='date'>
+									{", " +
+										date.toLocaleDateString([], {
+											weekday: "long",
+											year: "numeric",
+											month: "long",
+											day: "numeric",
+										})}
+								</span>
+							</div>
+							<TimeEditPopover
+								currentDate={date}
+								onDateChange={onDateChange}
+								isCustomTime={isCustomTime}
+								sourceTimezone={sourceTimezone}
+							/>
+						</div>
 						<TimelineDisplay
 							date={date}
 							currentTimeZone={currentTimeZone}

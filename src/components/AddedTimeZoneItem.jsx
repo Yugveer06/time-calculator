@@ -4,6 +4,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { AnimatePresence, Reorder, motion as m } from "framer-motion";
 import moment from "moment-timezone";
 import TimelineDisplay from "./TimelineDisplay";
+import TimeEditPopover from "./TimeEditPopover";
 
 const AddedTimeZoneItem = ({
 	addedTimeZone,
@@ -14,6 +15,9 @@ const AddedTimeZoneItem = ({
 	convertTimeZone,
 	offsetTime,
 	onRemove,
+	onDateChange,
+	isCustomTime,
+	sourceTimezone,
 }) => {
 	const timeZoneName =
 		addedTimeZone.timezone ||
@@ -76,37 +80,55 @@ const AddedTimeZoneItem = ({
 						)
 					</h2>
 					<div className='timeAndDate current'>
-						<span className='label'>Current Time and Date: </span>
-						<span className='time'>
-							{convertTimeZone(
-								date,
-								currentTimeZone,
-								timeZoneName
-							)
-								.toLocaleTimeString([], {
-									hour: "2-digit",
-									minute: "2-digit",
-									second: "2-digit",
-									hour12: hourFormat === 12,
-								})
-								.replace(
-									hourFormat === 12 ? /^00/ : /^24/,
-									hourFormat === 12 ? "12" : "00"
-								)}
-						</span>
-						<span className='date'>
-							{", " +
-								convertTimeZone(
-									date,
-									currentTimeZone,
-									addedTimeZone.timezone
-								).toLocaleDateString([], {
-									weekday: "long",
-									year: "numeric",
-									month: "long",
-									day: "numeric",
-								})}
-						</span>
+						<div
+							style={{
+								display: "flex",
+								justifyContent: "space-between",
+								alignItems: "flex-start",
+							}}
+						>
+							<div>
+								<span className='label'>
+									Current Time and Date:{" "}
+								</span>
+								<span className='time'>
+									{convertTimeZone(
+										date,
+										currentTimeZone,
+										timeZoneName
+									)
+										.toLocaleTimeString([], {
+											hour: "2-digit",
+											minute: "2-digit",
+											second: "2-digit",
+											hour12: hourFormat === 12,
+										})
+										.replace(
+											hourFormat === 12 ? /^00/ : /^24/,
+											hourFormat === 12 ? "12" : "00"
+										)}
+								</span>
+								<span className='date'>
+									{", " +
+										convertTimeZone(
+											date,
+											currentTimeZone,
+											addedTimeZone.timezone
+										).toLocaleDateString([], {
+											weekday: "long",
+											year: "numeric",
+											month: "long",
+											day: "numeric",
+										})}
+								</span>
+							</div>
+							<TimeEditPopover
+								currentDate={date}
+								onDateChange={onDateChange}
+								isCustomTime={isCustomTime}
+								sourceTimezone={sourceTimezone}
+							/>
+						</div>
 						<TimelineDisplay
 							date={date}
 							currentTimeZone={currentTimeZone}
