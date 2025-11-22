@@ -1,18 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "../styles/Home.scss";
 
 import { motion as m } from "framer-motion";
 
-import Navbar from "../components/Navbar";
 import AddedTimeZonesList from "../components/AddedTimeZonesList";
-import TimeZoneSearchPopover from "../components/TimeZoneSearchPopover";
+import Navbar from "../components/Navbar";
 import TimeOffsetControls from "../components/TimeOffsetControls";
+import TimeZoneSearchPopover from "../components/TimeZoneSearchPopover";
 
 import { getTimeZones } from "@vvo/tzdb";
 import useLocalStorage from "../hooks/useLocalStorage";
 // import data from "../countries+states+cities.json"; // Removed static import
 
 import Geonames from "geonames.js";
+import moment from "moment-timezone";
 
 const Home = () => {
 	const currentTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -38,9 +39,82 @@ const Home = () => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [searchResults, setSearchResults] = useState([]);
 
+	// State moved from AddedTimeZonesList
+	const [date, setDate] = useState(new Date());
+	const [globalTimeOverride, setGlobalTimeOverride] = useState(null);
+
 	useEffect(() => {
 		document.body.setAttribute("data-theme", userSettings.theme);
 	}, [userSettings.theme]);
+
+	// Load saved custom time on mount
+	useEffect(() => {
+		const savedTime = localStorage.getItem("globalTimeOverride");
+		if (savedTime) {
+			const parsedDate = new Date(savedTime);
+			if (!isNaN(parsedDate.getTime())) {
+				setGlobalTimeOverride(parsedDate);
+				setDate(parsedDate);
+			}
+		}
+	}, []);
+
+	// Save custom time to localStorage and update theme
+	useEffect(() => {
+		if (globalTimeOverride) {
+			localStorage.setItem(
+				"globalTimeOverride",
+				globalTimeOverride.toISOString()
+			);
+			document.body.setAttribute("data-mode", "custom-time");
+		} else {
+			localStorage.removeItem("globalTimeOverride");
+			document.body.removeAttribute("data-mode");
+		}
+	}, [globalTimeOverride]);
+
+	useEffect(() => {
+		var timerID = setInterval(() => tick(), 1000);
+		return function cleanup() {
+			clearInterval(timerID);
+		};
+	});
+
+	function tick() {
+		// Only update date if we're not using a custom time override
+		if (!globalTimeOverride) {
+			setDate(new Date());
+		}
+	}
+
+	const handleGlobalTimeChange = (newDate, sourceTimezone) => {
+		if (newDate === null) {
+			// Reset to real-time
+			setGlobalTimeOverride(null);
+			setDate(new Date());
+		} else {
+			// newDate is the "face value" time set by the user.
+			// We need to interpret this face value as being in the sourceTimezone
+			// and convert it to an absolute timestamp.
+
+			// Format the date components to a string that moment can parse
+			// We use local getters because newDate is a local Date object constructed from inputs
+			const year = newDate.getFullYear();
+			const month = String(newDate.getMonth() + 1).padStart(2, "0");
+			const day = String(newDate.getDate()).padStart(2, "0");
+			const hours = String(newDate.getHours()).padStart(2, "0");
+			const minutes = String(newDate.getMinutes()).padStart(2, "0");
+			const seconds = String(newDate.getSeconds()).padStart(2, "0");
+
+			const timeString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+			// Create absolute date from the source timezone
+			const absoluteDate = moment.tz(timeString, sourceTimezone).toDate();
+
+			setGlobalTimeOverride(absoluteDate);
+			setDate(absoluteDate);
+		}
+	};
 
 	const [popOverOpened, setPopOverOpened] = useState(false);
 	const [isFetchingTimeZone, setIsFetchingTimeZone] = useState(false);
@@ -263,10 +337,6 @@ const Home = () => {
 		setSearchResults([]);
 	}
 
-	useEffect(() => {
-		document.documentElement.setAttribute("data-theme", userSettings.theme);
-	}, [userSettings.theme]);
-
 	return (
 		<div className='wrapper'>
 			<Navbar
@@ -274,6 +344,7 @@ const Home = () => {
 				setHourFormat={setHourFormat}
 				userSettings={userSettings}
 				setUserSettings={setUserSettings}
+				isCustomTime={globalTimeOverride !== null}
 			/>
 			<main>
 				<AddedTimeZonesList
@@ -286,6 +357,9 @@ const Home = () => {
 					setAddedTimeZones={setAddedTimeZones}
 					isFetchingTimeZone={isFetchingTimeZone}
 					spinnerText={spinnerText}
+					date={date}
+					globalTimeOverride={globalTimeOverride}
+					handleGlobalTimeChange={handleGlobalTimeChange}
 				/>
 				<m.div className='addTimeZone'>
 					<TimeZoneSearchPopover
