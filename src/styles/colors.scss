@@ -1,0 +1,35 @@
+[data-theme="light"] {
+	// Primary Colors
+	--defaultTimeZoneColor: rgb(49, 161, 109);
+	--marineBlue: rgb(2, 41, 90);
+	--purplishBlue: rgb(71, 61, 255);
+	--pastelBlue: rgb(173, 190, 255);
+	--lightBlue: rgb(191, 226, 253);
+
+	// Neutral Colors
+	--coolGray: rgb(150, 153, 171);
+	--lightGray: rgb(214, 217, 230);
+	--magnolia: rgb(240, 246, 255);
+	--alabaster: rgb(250, 251, 255);
+	--white: rgb(255, 255, 255);
+	--black: rgb(0, 0, 0);
+	--lighterBlack: rgb(44, 44, 44);
+}
+
+[data-theme="dark"] {
+	// Primary Colors
+	--defaultTimeZoneColor: rgb(84, 216, 154);
+	--marineBlue: rgb(184, 211, 245);
+	--purplishBlue: rgb(131, 205, 255);
+	--pastelBlue: rgb(0, 27, 134);
+	--lightBlue: rgb(0, 63, 110);
+
+	// Neutral Colors
+	--coolGray: rgb(18, 29, 90);
+	--lightGray: rgb(32, 41, 77);
+	--magnolia: rgb(3, 20, 46);
+	--alabaster: rgb(0, 4, 22);
+	--white: rgb(8, 10, 17);
+	--black: rgb(255, 255, 255);
+	--lighterBlack: rgb(216, 216, 216);
+}

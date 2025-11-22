@@ -1,0 +1,481 @@
+@import "./colors.scss";
+
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap");
+
+// ----- Mixins -----
+@mixin centered-flex-row {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+@mixin centered-flex-column {
+	@include centered-flex-row;
+	flex-direction: column;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: "JetBrains Mono", sans-serif;
+	letter-spacing: 1px;
+	// text-transform: uppercase;
+	transition: background 0.2s ease, color 0.2s ease;
+}
+
+body {
+	@include centered-flex-row;
+	background: var(--white);
+}
+
+h1 {
+	font-size: 1.4em;
+	color: var(--black);
+}
+h2 {
+	font-size: 1.2em;
+	color: var(--lighterBlack);
+}
+span {
+	color: var(--lighterBlack);
+}
+
+input {
+	color: var(--lighterBlack) !important;
+}
+
+button,
+fieldset,
+input {
+	all: unset;
+}
+
+.PopoverContent {
+	min-width: 256px;
+	border-radius: 4px;
+	background-color: var(--white);
+	border: 1px solid var(--marineBlue);
+	box-shadow: 0 0 64px -12px var(--coolGray);
+	animation-duration: 400ms;
+	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+	will-change: transform, opacity;
+
+	&[data-state="open"][data-side="top"] {
+		animation-name: slideDownAndFade;
+	}
+	&[data-state="open"][data-side="right"] {
+		animation-name: slideLeftAndFade;
+	}
+	&[data-state="open"][data-side="bottom"] {
+		animation-name: slideUpAndFade;
+	}
+	&[data-state="open"][data-side="left"] {
+		animation-name: slideRightAndFade;
+	}
+
+	.PopoverHeader {
+		// common popover styles
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 12px 16px;
+
+		.searchArea {
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+
+			& * {
+				transition: all 0s;
+			}
+
+			.inputArea {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 8px;
+				.timeZoneSearchBar {
+					height: 32px;
+					border-radius: 4px;
+					background: var(--lightGray);
+					width: calc(100% - 16px - 16px);
+					padding: 0px 16px;
+
+					&:hover,
+					&:focus {
+						color: var(--marineBlue);
+						background: var(--lightBlue);
+					}
+
+					&:hover::placeholder,
+					&:focus::placeholder {
+						color: var(--marineBlue);
+						opacity: 0.64;
+					}
+				}
+
+				.clearSearchQuery {
+					@include centered-flex-row;
+					color: var(--lighterBlack);
+					background: var(--lightGray);
+					cursor: pointer;
+					width: 32px;
+					height: 32px;
+					border-radius: 4px;
+
+					&:hover,
+					&:focus {
+						color: var(--marineBlue);
+						background: var(--lightBlue);
+					}
+				}
+			}
+
+			.resultsFound {
+				color: var(--lighterBlack);
+			}
+		}
+	}
+
+	// settings popover
+	.options {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 8px 16px 16px 16px;
+
+		.listItem {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+
+			.switchContainer {
+				@include centered-flex-row;
+				border-radius: 4px;
+
+				button {
+					all: unset;
+					@include centered-flex-row;
+					user-select: none;
+					width: 32px;
+					height: 32px;
+					color: var(--lighterBlack);
+					background: var(--alabaster);
+
+					&:first-child {
+						border-radius: 4px 0 0 4px;
+					}
+					&:last-child {
+						border-radius: 0 4px 4px 0;
+					}
+					&.selected {
+						color: var(--alabaster);
+						background: var(--marineBlue);
+					}
+
+					&:focus {
+						box-shadow: 0 0 0 2px var(--white) inset, 0 0 0 2px var(--purplishBlue);
+					}
+
+					svg {
+						pointer-events: none;
+					}
+				}
+			}
+		}
+	}
+
+	// add time zones popover
+	.ScrollAreaRoot {
+		width: 100%;
+		height: 40vh;
+		border-radius: 4px;
+		overflow: hidden;
+		background-color: var(--white);
+		--scrollbar-size: 10px;
+
+		.ScrollAreaViewport {
+			width: 100%;
+			height: 100%;
+			border-radius: inherit;
+
+			.timeZonesList {
+				display: flex;
+				flex-direction: column;
+				padding: 8px 16px;
+				gap: 1px;
+
+				.searchTimeZone {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					cursor: pointer;
+					padding: 4px 0;
+					border-radius: 4px;
+					gap: 16px;
+					color: var(--lighterBlack);
+					background: var(--white);
+					transition: color 0s ease, background 0s ease, padding 0.2s;
+
+					&:hover,
+					&:focus {
+						padding: 4px 16px;
+						color: var(--marineBlue);
+						background: var(--lightBlue);
+						transition: color 0s ease, background 0s ease, padding 0.2s ease;
+					}
+				}
+			}
+		}
+
+		.ScrollAreaScrollbar {
+			display: flex;
+			user-select: none;
+			touch-action: none;
+			padding: 2px;
+			border-radius: 6px;
+			background: var(--alabaster);
+			transition: background 0.2s ease;
+
+			&:hover {
+				background: var(--magnolia);
+			}
+			&:hover .ScrollAreaThumb {
+				background: var(--marineBlue);
+			}
+			&[data-orientation="vertical"] {
+				width: 12px;
+			}
+			&[data-orientation="horizontal"] {
+				flex-direction: column;
+				height: 12px;
+			}
+		}
+
+		.ScrollAreaThumb {
+			flex: 1;
+			background: var(--coolGray);
+			border-radius: 6px;
+			position: relative;
+			transition: background 0.2s ease;
+		}
+		.ScrollAreaThumb::before {
+			content: "";
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 100%;
+			height: 100%;
+			min-width: 44px;
+			min-height: 44px;
+		}
+
+		.ScrollAreaCorner {
+			background: var(--marineBlue);
+		}
+	}
+
+	.PopoverArrow {
+		fill: var(--marineBlue);
+	}
+
+	.PopoverClose {
+		font-family: inherit;
+		border-radius: 50%;
+		height: 24px;
+		width: 24px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--marineBlue);
+		position: absolute;
+		top: 12px;
+		right: 12px;
+
+		& * {
+			transition: all 0s;
+		}
+
+		&:hover {
+			color: var(--alabaster);
+			background: var(--purplishBlue);
+		}
+		&:focus {
+			box-shadow: 0 0 0 2px var(--purplishBlue);
+		}
+	}
+}
+
+@keyframes slideUpAndFade {
+	from {
+		opacity: 0;
+		transform: translateY(2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideRightAndFade {
+	from {
+		opacity: 0;
+		transform: translateX(-2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideDownAndFade {
+	from {
+		opacity: 0;
+		transform: translateY(-2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes slideLeftAndFade {
+	from {
+		opacity: 0;
+		transform: translateX(2px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+.SelectTrigger {
+	margin: 0 4px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px;
+	padding: 0 8px;
+	line-height: 1;
+	height: 24px;
+	gap: 8px;
+	background: var(--lightGray);
+
+	& * {
+		transition: all 0s ease;
+	}
+
+	&:hover,
+	&:focus {
+		background: var(--lightBlue);
+	}
+
+	&:hover span,
+	&:focus span {
+		color: var(--marineBlue);
+	}
+
+	.SelectIcon {
+		font-size: 0.8em;
+	}
+}
+
+.SelectContent {
+	overflow: hidden;
+	background-color: var(--white);
+	border-radius: 6px;
+	box-shadow: 0 0 32px -12px var(--marineBlue);
+
+	.SelectScrollButton {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: 24px;
+		background: var(--white);
+		color: var(--marineBlue);
+		cursor: default;
+	}
+
+	.SelectViewport {
+		padding: 4px;
+
+		.SelectItem {
+			line-height: 1;
+			background: var(--white);
+			border-radius: 4px;
+			display: flex;
+			align-items: center;
+			height: 25px;
+			padding: 0 24px 0 8px;
+			position: relative;
+			user-select: none;
+			transition: all 0s;
+
+			& * {
+				transition: all 0s;
+			}
+
+			&[data-disabled] {
+				color: var(--coolGray);
+				pointer-events: none;
+			}
+
+			&[data-disabled] span {
+				color: var(--coolGray);
+			}
+
+			&[data-highlighted] {
+				outline: none;
+				color: var(--white);
+				background: var(--marineBlue);
+			}
+
+			&[data-highlighted] span {
+				color: var(--white);
+			}
+
+			.SelectItemIndicator {
+				font-size: 0.8em;
+				position: absolute;
+				right: 0;
+				width: 24px;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+			}
+		}
+	}
+}
+
+.TooltipContent {
+	border-radius: 4px;
+	padding: 8px;
+	font-size: 15px;
+	line-height: 1;
+	color: var(--marineBlue);
+	background-color: var(--white);
+	box-shadow: 0 0 32px -12px var(--marineBlue);
+	border: 1px solid var(--marineBlue);
+	user-select: none;
+	animation-duration: 400ms;
+	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+	will-change: transform, opacity;
+}
+.TooltipContent[data-state="delayed-open"][data-side="top"] {
+	animation-name: slideDownAndFade;
+}
+.TooltipContent[data-state="delayed-open"][data-side="right"] {
+	animation-name: slideLeftAndFade;
+}
+.TooltipContent[data-state="delayed-open"][data-side="bottom"] {
+	animation-name: slideUpAndFade;
+}
+.TooltipContent[data-state="delayed-open"][data-side="left"] {
+	animation-name: slideRightAndFade;
+}
+
+.TooltipArrow {
+	fill: var(--marineBlue);
+}
