@@ -33,3 +33,35 @@
 	--black: rgb(255, 255, 255);
 	--lighterBlack: rgb(216, 216, 216);
 }
+
+// Custom Time Mode Overrides (Orange/Warm Theme)
+[data-theme="light"][data-mode="custom-time"] {
+	// Primary Colors
+	--defaultTimeZoneColor: rgb(191, 54, 12); // Deep Orange 900
+	--marineBlue: rgb(62, 39, 35); // Brown 900
+	--purplishBlue: rgb(230, 81, 0); // Orange 900 (Accent)
+	--pastelBlue: rgb(255, 204, 188); // Deep Orange 100
+	--lightBlue: rgb(255, 224, 178); // Orange 100
+
+	// Neutral Colors (Slightly Warmer)
+	--coolGray: rgb(141, 110, 99); // Brown 400
+	--lightGray: rgb(215, 204, 200); // Brown 100
+	--magnolia: rgb(255, 248, 240); // Warm White
+	--alabaster: rgb(255, 252, 245); // Warm White
+}
+
+[data-theme="dark"][data-mode="custom-time"] {
+	// Primary Colors
+	--defaultTimeZoneColor: rgb(255, 112, 67); // Deep Orange 400
+	--marineBlue: rgb(255, 224, 178); // Orange 100
+	--purplishBlue: rgb(255, 167, 38); // Orange 400 (Accent)
+	--pastelBlue: rgb(62, 39, 35); // Brown 900
+	--lightBlue: rgb(78, 52, 46); // Brown 800
+
+	// Neutral Colors (Warm/Brown Tinted)
+	--coolGray: rgb(109, 76, 65); // Brown 600
+	--lightGray: rgb(62, 39, 35); // Brown 900
+	--magnolia: rgb(45, 25, 20); // Very Dark Brown
+	--alabaster: rgb(35, 20, 15); // Almost Black Brown
+	--white: rgb(13, 5, 2); // Warm Black
+}

@@ -38,6 +38,10 @@ const Home = () => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [searchResults, setSearchResults] = useState([]);
 
+	useEffect(() => {
+		document.body.setAttribute("data-theme", userSettings.theme);
+	}, [userSettings.theme]);
+
 	const [popOverOpened, setPopOverOpened] = useState(false);
 	const [isFetchingTimeZone, setIsFetchingTimeZone] = useState(false);
 

@@ -32,15 +32,17 @@ const AddedTimeZonesList = ({
 		}
 	}, []);
 
-	// Save custom time to localStorage
+	// Save custom time to localStorage and update theme
 	useEffect(() => {
 		if (globalTimeOverride) {
 			localStorage.setItem(
 				"globalTimeOverride",
 				globalTimeOverride.toISOString()
 			);
+			document.body.setAttribute("data-mode", "custom-time");
 		} else {
 			localStorage.removeItem("globalTimeOverride");
+			document.body.removeAttribute("data-mode");
 		}
 	}, [globalTimeOverride]);
 
