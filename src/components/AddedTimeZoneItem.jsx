@@ -171,11 +171,7 @@ const AddedTimeZoneItem = React.forwardRef(
 									</span>
 									<span className='time'>
 										{offsetTime(
-											convertTimeZone(
-												date,
-												currentTimeZone,
-												addedTimeZone.timezone
-											),
+											date,
 											offsetTimeBy.hours,
 											offsetTimeBy.minutes,
 											offsetTimeBy.seconds
@@ -196,11 +192,7 @@ const AddedTimeZoneItem = React.forwardRef(
 									<span className='date'>
 										{", " +
 											offsetTime(
-												convertTimeZone(
-													date,
-													currentTimeZone,
-													addedTimeZone.timezone
-												),
+												date,
 												offsetTimeBy.hours,
 												offsetTimeBy.minutes,
 												offsetTimeBy.seconds
