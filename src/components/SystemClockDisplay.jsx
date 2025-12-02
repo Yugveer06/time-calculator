@@ -2,9 +2,11 @@ import React from "react";
 import { AnimatePresence, motion as m } from "framer-motion";
 import TimelineDisplay from "./TimelineDisplay";
 import TimeEditPopover from "./TimeEditPopover";
+import TimezoneAdditionalInfo from "./TimezoneAdditionalInfo";
 
 const SystemClockDisplay = ({
 	currentTimeZone,
+	systemTimezoneData,
 	date,
 	hourFormat,
 	offsetTimeBy,
@@ -61,12 +63,19 @@ const SystemClockDisplay = ({
 										})}
 								</span>
 							</div>
-							<TimeEditPopover
-								currentDate={date}
-								onDateChange={onDateChange}
-								isCustomTime={isCustomTime}
-								sourceTimezone={sourceTimezone}
-							/>
+							<div style={{ display: "flex", gap: "6px" }}>
+								{systemTimezoneData && (
+									<TimezoneAdditionalInfo
+										addedTimeZone={systemTimezoneData}
+									/>
+								)}
+								<TimeEditPopover
+									currentDate={date}
+									onDateChange={onDateChange}
+									isCustomTime={isCustomTime}
+									sourceTimezone={sourceTimezone}
+								/>
+							</div>
 						</div>
 						<TimelineDisplay
 							date={date}

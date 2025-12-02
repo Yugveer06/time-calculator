@@ -5,6 +5,7 @@ import { AnimatePresence, Reorder, motion as m } from "framer-motion";
 import moment from "moment-timezone";
 import TimelineDisplay from "./TimelineDisplay";
 import TimeEditPopover from "./TimeEditPopover";
+import TimezoneAdditionalInfo from "./TimezoneAdditionalInfo";
 
 const AddedTimeZoneItem = React.forwardRef(
 	(
@@ -126,12 +127,17 @@ const AddedTimeZoneItem = React.forwardRef(
 											})}
 									</span>
 								</div>
-								<TimeEditPopover
-									currentDate={date}
-									onDateChange={onDateChange}
-									isCustomTime={isCustomTime}
-									sourceTimezone={sourceTimezone}
-								/>
+								<div style={{ display: "flex", gap: "6px" }}>
+									<TimezoneAdditionalInfo
+										addedTimeZone={addedTimeZone}
+									/>
+									<TimeEditPopover
+										currentDate={date}
+										onDateChange={onDateChange}
+										isCustomTime={isCustomTime}
+										sourceTimezone={sourceTimezone}
+									/>
+								</div>
 							</div>
 							<TimelineDisplay
 								date={date}

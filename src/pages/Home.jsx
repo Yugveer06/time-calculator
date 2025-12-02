@@ -42,6 +42,49 @@ const Home = () => {
 	// State moved from AddedTimeZonesList
 	const [date, setDate] = useState(new Date());
 	const [globalTimeOverride, setGlobalTimeOverride] = useState(null);
+	const [systemTimezoneData, setSystemTimezoneData] = useState(null);
+
+	// Load system timezone data based on currentTimeZone
+	useEffect(() => {
+		const loadSystemTimezoneData = async () => {
+			try {
+				const module = await import("../countries+states+cities.json");
+				const data = module.default;
+
+				// Handle legacy timezone names
+				let targetTimezone = currentTimeZone;
+				if (currentTimeZone === "Asia/Calcutta") {
+					targetTimezone = "Asia/Kolkata";
+				}
+
+				// Find the country/city that matches the system timezone
+				for (const country of data) {
+					// Check country-level timezone
+					if (country.timezones) {
+						for (const tz of country.timezones) {
+							if (tz.zoneName === targetTimezone) {
+								setSystemTimezoneData({
+									name: country.name,
+									latitude: country.latitude,
+									longitude: country.longitude,
+									currency: country.currency,
+									currency_name: country.currency_name,
+									currency_symbol: country.currency_symbol,
+									phone_code: country.phone_code,
+									timezone: targetTimezone,
+								});
+								return;
+							}
+						}
+					}
+				}
+			} catch (error) {
+				console.error("Error loading system timezone data:", error);
+			}
+		};
+
+		loadSystemTimezoneData();
+	}, [currentTimeZone]);
 
 	useEffect(() => {
 		document.body.setAttribute("data-theme", userSettings.theme);
@@ -181,18 +224,30 @@ const Home = () => {
 					name: country.name,
 					latitude: country.latitude,
 					longitude: country.longitude,
+					currency: country.currency,
+					currency_name: country.currency_name,
+					currency_symbol: country.currency_symbol,
+					phone_code: country.phone_code,
 				});
 			} else if (country.name.toLowerCase().includes(lowerCaseQuery)) {
 				partialMatches.push({
 					name: country.name,
 					latitude: country.latitude,
 					longitude: country.longitude,
+					currency: country.currency,
+					currency_name: country.currency_name,
+					currency_symbol: country.currency_symbol,
+					phone_code: country.phone_code,
 				});
 			} else {
 				country.states.forEach(state => {
 					if (state.name.toLowerCase() === lowerCaseQuery) {
 						exactMatches.push({
 							name: country.name,
+							currency: country.currency,
+							currency_name: country.currency_name,
+							currency_symbol: country.currency_symbol,
+							phone_code: country.phone_code,
 							states: [
 								{
 									name: state.name,
@@ -206,6 +261,10 @@ const Home = () => {
 					) {
 						partialMatches.push({
 							name: country.name,
+							currency: country.currency,
+							currency_name: country.currency_name,
+							currency_symbol: country.currency_symbol,
+							phone_code: country.phone_code,
 							states: [
 								{
 									name: state.name,
@@ -219,6 +278,10 @@ const Home = () => {
 							if (city.name.toLowerCase() === lowerCaseQuery) {
 								exactMatches.push({
 									name: country.name,
+									currency: country.currency,
+									currency_name: country.currency_name,
+									currency_symbol: country.currency_symbol,
+									phone_code: country.phone_code,
 									states: [
 										{
 											name: state.name,
@@ -237,6 +300,10 @@ const Home = () => {
 							) {
 								partialMatches.push({
 									name: country.name,
+									currency: country.currency,
+									currency_name: country.currency_name,
+									currency_symbol: country.currency_symbol,
+									phone_code: country.phone_code,
 									states: [
 										{
 											name: state.name,
@@ -360,6 +427,7 @@ const Home = () => {
 					date={date}
 					globalTimeOverride={globalTimeOverride}
 					handleGlobalTimeChange={handleGlobalTimeChange}
+					systemTimezoneData={systemTimezoneData}
 				/>
 				<m.div className='addTimeZone'>
 					<TimeZoneSearchPopover

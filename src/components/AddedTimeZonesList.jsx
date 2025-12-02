@@ -17,6 +17,7 @@ const AddedTimeZonesList = ({
 	date,
 	globalTimeOverride,
 	handleGlobalTimeChange,
+	systemTimezoneData,
 }) => {
 	function convertTimeZone(date, fromTimeZone, toTimeZone) {
 		// If source and target are the same, just return the date
@@ -75,6 +76,7 @@ const AddedTimeZonesList = ({
 		<div className='addedTimeZones'>
 			<SystemClockDisplay
 				currentTimeZone={currentTimeZone}
+				systemTimezoneData={systemTimezoneData}
 				date={
 					globalTimeOverride
 						? getShiftedDate(globalTimeOverride, currentTimeZone)

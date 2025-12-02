@@ -9,6 +9,11 @@ This is a React-based web application built with Vite that allows users to track
 ## Features
 
 -   **Multi-Time Zone Tracking**: Search and add multiple locations (countries, states, cities) to track their local time.
+-   **Rich Location Information**: View detailed info for each timezone including:
+    -   Currency name and symbol
+    -   International phone code
+    -   Geographic coordinates (latitude/longitude)
+    -   Current temperature (from OpenWeather API)
 -   **Time Offset Calculator**: Calculate "What will be the time" or "What was the time" by adding or subtracting hours, minutes, and seconds.
 -   **Visual Timeline**: A 24-hour visual timeline for each time zone to easily visualize day/night cycles.
 -   **Customizable**: Supports 12-hour and 24-hour formats.
@@ -23,3 +28,4 @@ This is a React-based web application built with Vite that allows users to track
 -   Radix UI
 -   Moment Timezone
 -   Geonames API
+-   OpenWeather API
